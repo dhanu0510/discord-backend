@@ -17,6 +17,7 @@ const loginSchema = Joi.object({
 
 //
 const authController = require("../controllers/auth/authControllers.js");
+const auth = require("../middleware/auth.js");
 
 router.post(
   "/register",
@@ -29,5 +30,10 @@ router.post(
   validator.body(loginSchema),
   authController.controller.postLogin
 );
+
+// test route to verify middleware
+router.get("/test", auth, (req, res) => {
+  res.send("Hello from test route");
+});
 
 module.exports = router;

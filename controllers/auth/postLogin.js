@@ -24,12 +24,10 @@ const postLogin = async (req, res) => {
         },
       });
     } else {
-      res.status(400).json({
-        message: "Invalid credentials",
-      });
+      res.status(400).send("Invalid credentials");
     }
   } catch (err) {
-    return res.status(500).json({ message: "Internal server error" + err });
+    return res.status(500).send("Internal server error" + err);
   }
 };
 

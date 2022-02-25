@@ -9,7 +9,7 @@ const postRegister = async (req, res) => {
     const userExist = await User.exists({ mail: mail.toLowerCase() });
 
     if (userExist) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).send("User already exist");
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);

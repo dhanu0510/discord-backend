@@ -5,9 +5,7 @@ const User = require("../../models/user");
 const postAccept = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log(id);
     const invitation = await FriendInvitation.findById(id);
-    console.log(invitation);
     if (!invitation) {
       return res.status(404).send("Invitation not found");
     }

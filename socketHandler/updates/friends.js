@@ -39,7 +39,6 @@ const updateFriends = async (userId) => {
             mail: f.mail,
           };
         });
-        console.log(friendsList);
         const io = serverStore.getSocketServerInstance();
 
         receiverList.forEach((receiverSocketId) => {

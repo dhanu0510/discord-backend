@@ -1,15 +1,13 @@
 const authSocket = require("./middleware/authSocket");
-const newConnectionHandler = require("./socketHandler/newConnectionHandler");
-const disconnectHandler = require("./socketHandler/disconnectHandler");
-const directMessageHandler = require("./socketHandler/directMessageHandler");
-const directChatHistoryHandler = require("./socketHandler/directChatHistoryHandler");
-const roomCreateHandler = require("./socketHandler/roomCreateHandler");
-
-const roomJoinHandler = require("./socketHandler/roomJoinHandler");
-const roomLeaveHandler = require("./socketHandler/roomLeaveHandler");
-
-const roomInitializeConnectionHandler = require("./socketHandler/roomInitializeConnectionHandler");
-const roomSignalingDataHandler = require("./socketHandler/roomSignalingDataHandler");
+const newConnectionHandler = require("./socketHandlers/newConnectionHandler");
+const disconnectHandler = require("./socketHandlers/disconnectHandler");
+const directMessageHandler = require("./socketHandlers/directMessageHandler");
+const directChatHistoryHandler = require("./socketHandlers/directChatHistoryHandler");
+const roomCreateHandler = require("./socketHandlers/roomCreateHandler");
+const roomJoinHandler = require("./socketHandlers/roomJoinHandler");
+const roomLeaveHandler = require("./socketHandlers/roomLeaveHandler");
+const roomInitializeConnectionHandler = require("./socketHandlers/roomInitializeConnectionHandler");
+const roomSignalingDataHandler = require("./socketHandlers/roomSignalingDataHandler");
 
 const serverStore = require("./serverStore");
 
@@ -33,14 +31,16 @@ const registerSocketServer = (server) => {
   };
 
   io.on("connection", (socket) => {
+    console.log("user connected");
+    console.log(socket.id);
+
     newConnectionHandler(socket, io);
     emitOnlineUsers();
-    //   new connection handler
 
     socket.on("direct-message", (data) => {
-      console.log(data);
       directMessageHandler(socket, data);
     });
+
     socket.on("direct-chat-history", (data) => {
       directChatHistoryHandler(socket, data);
     });
@@ -56,6 +56,7 @@ const registerSocketServer = (server) => {
     socket.on("room-leave", (data) => {
       roomLeaveHandler(socket, data);
     });
+
     socket.on("conn-init", (data) => {
       roomInitializeConnectionHandler(socket, data);
     });
@@ -63,16 +64,17 @@ const registerSocketServer = (server) => {
     socket.on("conn-signal", (data) => {
       roomSignalingDataHandler(socket, data);
     });
-    socket.on("conn-signal", (data) => {
-      roomSignalingDataHandler(socket, data);
-    });
+
     socket.on("disconnect", () => {
       disconnectHandler(socket);
     });
   });
+
   setInterval(() => {
     emitOnlineUsers();
-  }, [1000 * 80]);
+  }, [1000 * 8]);
 };
 
-module.exports = { registerSocketServer };
+module.exports = {
+  registerSocketServer,
+};

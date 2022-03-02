@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/auth.js");
 const Joi = require("joi");
 const validator = require("express-joi-validation").createValidator({});
-const friendInvitationController = require("../controllers/friendInvitations/friendInvitationController.js");
+const auth = require("../middleware/auth");
+const friendInvitationControllers = require("../controllers/friendInvitation/friendInvitationControllers");
 
 const postFriendInvitationSchema = Joi.object({
-  targetMailAddress: Joi.string().email().required(),
+  targetMailAddress: Joi.string().email(),
 });
 
 const inviteDecisionSchema = Joi.object({
@@ -17,21 +17,21 @@ router.post(
   "/invite",
   auth,
   validator.body(postFriendInvitationSchema),
-  friendInvitationController.controllers.postInvite
+  friendInvitationControllers.controllers.postInvite
 );
 
 router.post(
   "/accept",
   auth,
   validator.body(inviteDecisionSchema),
-  friendInvitationController.controllers.postAccept
+  friendInvitationControllers.controllers.postAccept
 );
 
 router.post(
   "/reject",
   auth,
   validator.body(inviteDecisionSchema),
-  friendInvitationController.controllers.postReject
+  friendInvitationControllers.controllers.postReject
 );
 
 module.exports = router;

@@ -1,6 +1,6 @@
-const mongoos = require("mongoose");
+const mongoose = require("mongoose");
 
-const Schema = mongoos.Schema;
+const Schema = mongoose.Schema;
 
 const friendInvitationSchema = new Schema({
   senderId: {
@@ -13,4 +13,4 @@ const friendInvitationSchema = new Schema({
   },
 });
 
-module.exports = mongoos.model("FriendInvitation", friendInvitationSchema);
+module.exports = mongoose.model("FriendInvitation", friendInvitationSchema);
